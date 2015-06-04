@@ -13,10 +13,10 @@ fmax  = max(f(:));
 f = (f-fmin)/(fmax-fmin);  
 
 flag89 = 1;% Using eq.8 or eq.9, if 1, Eq.8.
-n = 0.8;
+n = 1;
 
 if flag89 == 1,
-    [Mx,My] = createMaskEq8(rx,ry,rz,n);%这个是VFC模型中的公式8，我们修改后加了rz即理论模型CONVEF中的参数"h"
+    [Mx,My] = createMaskEq8(rx,ry,0,n);%这个是VFC模型中的公式8，我们修改后加了rz即理论模型CONVEF中的参数"h"
 else
     %-----------------Gaussian Blur for TIP paper revision,2011/03/27----------
     kesi = rz;

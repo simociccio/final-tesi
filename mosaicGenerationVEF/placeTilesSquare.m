@@ -20,7 +20,7 @@ NoGVFIterations=200;
 
 [u,v] = getVEF(dbdir,fileName);
 
-% hold on;quiver(u./sqrt(u.*u + v.*v),v./sqrt(u.*u + v.*v),'k');hold off
+hold on;quiver(u./sqrt(u.*u + v.*v),v./sqrt(u.*u + v.*v),'k');hold off
 
 %a partire dal campo vettoriale prodotto dal GVF calcola gli orientamenti e
 %li riporta in un intervallo [-90 90]
