@@ -20,10 +20,16 @@ NoGVFIterations=200;
 
 [u,v] = getVEF(dbdir,fileName);
 
-hold on;quiver(u./sqrt(u.*u + v.*v),v./sqrt(u.*u + v.*v),'k');hold off
+% magnitude = sqrt(u.^2 + v.^2)<8;
+% magnitude=magnitude .* randi(20);
+% u=u+magnitude;
+% v=v+magnitude;
+
+%  hold on;quiver(u,v,0.5);hold off
 
 %a partire dal campo vettoriale prodotto dal GVF calcola gli orientamenti e
 %li riporta in un intervallo [-90 90]
+tic
 angle=atan2(v,u);
 bool_gt_90=(angle>(pi/2));
 bool_lt_90=(angle<-(pi/2));
@@ -33,9 +39,9 @@ new_angle=new_angle.*(180/pi);
 
 bool_gt0=new_angle>0;
 new_angle=(new_angle-90).*bool_gt0+(new_angle+90).*not(bool_gt0);
+toc
 
-
-
+tic
 %legge i dati relativi ai tasselli
 data_tile=load('data_tile_square.mat');
 x_v=data_tile.x_v;
@@ -73,10 +79,10 @@ elem_per_row=round(col/tileSize.*1.5);
 bool_image=zeros(row,col);
 
 mosaic_image=ones(row,col,3)*127;
-
-
+cur_angle=0;
+toc
 %Area_int_border=0;
-
+magnitude=0;
 test=0;
 for i=1:2:row
     i
@@ -91,7 +97,14 @@ for i=1:2:row
         
         %orientare il tassello in base alla direzione fornita dal GVF nel
         %punto (TO DO da valutare l'effetto di prendere la direzione ortogonale)
-        cur_angle=new_angle(i,j);
+        if(abs(cur_angle - new_angle(i,j))<0.01)
+            
+     
+            new_angle=new_angle.*(180/pi)+(-1+(1+1*rand(1)));
+            cur_angle=new_angle(i,j);
+        else    
+            cur_angle=new_angle(i,j);
+        end   
         
         %considera tutte le tile precomputate
         for k=1:selectedTiles
@@ -104,7 +117,9 @@ for i=1:2:row
             
             %calcola l'angolo tale da allineare il tassello alla direzione
             %proposta dal GVF
+            
             mov_angle=cur_angle-orientation;
+            
             %calcola le nuove coordinate (rotazione)
             new_x=x.*cosd(mov_angle)-y.*sind(mov_angle);
             new_y=x.*sind(mov_angle)+y.*cosd(mov_angle);

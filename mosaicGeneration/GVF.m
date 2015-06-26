@@ -26,7 +26,7 @@ f = BoundMirrorExpand(f);  % Take care of boundary condition
 [fx,fy] = gradient(f);     % Calculate the gradient of the edge map
 u = fx; v = fy;            % Initialize GVF to the gradient
 SqrMagf = fx.*fx + fy.*fy; % Squared magnitude of the gradient field
-
+tic
 % Iteratively solve for the GVF u,v
 for i=1:ITER,
   u = BoundMirrorEnsure(u);
@@ -38,6 +38,7 @@ for i=1:ITER,
      fprintf(1, '\n');
   end 
 end
+toc
 fprintf(1, '\n');
 
 u = BoundMirrorShrink(u);

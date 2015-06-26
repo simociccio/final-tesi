@@ -27,7 +27,7 @@ end
 fx = xconv2(f,Mx);
 fy = xconv2(f,My);
 
-fprintf(1,'  in VEF, rx [%d], ry [%d]\n', rx,ry);
+% fprintf(1,'  in VEF, rx [%d], ry [%d]\n', rx,ry);
 
 
 function [Mx,My] = createMaskEq8(rx,ry,rz,n)%
@@ -39,8 +39,10 @@ j = -Rx:Rx;
 im = repmat(i',1,2*Rx+1);
 jm = repmat(j,2*Ry+1,1);
 rzz = ones(2*Ry+1,2*Rx+1).*rz;
+
 Mx(i+ Ry+1,j+Rx+1) = -jm./power(im.*im + jm.*jm + rzz,1+ 0.5*(n));%  n=2.6 for 3 shape
 My(i+ Ry+1,j+Rx+1) = -im./power(im.*im + jm.*jm + rzz,1+ 0.5*(n)); % 1 + 0.5*(n), sqrt is absent due to computation cost.
+
 Mx(Ry+1,Rx+1) = 0;
 My(Ry+1,Rx+1) = 0;
 
@@ -61,7 +63,7 @@ fprintf('sono in 9');
 Rx = floor(rx) - 1;
 Ry = floor(ry) - 1;
 
-for i = -Ry:Ry,
+for i = -Ry:Ry
     for j = -Rx:Rx,
         if i == 0 & j == 0,
             Mx(i+ Ry+1,j+Rx+1) = 0;

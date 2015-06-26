@@ -17,9 +17,10 @@ A=imread(fileName);
 dbdir='';
 NoGVFIterations=200;
 
-[u,v]=getGVFField(dbdir,fileName,NoGVFIterations);
-hold on;quiver(u./sqrt(u.*u + v.*v),v./sqrt(u.*u + v.*v),'k');hold off
 
+[u,v]=getGVFField(dbdir,fileName,NoGVFIterations);
+% hold on;quiver(u./sqrt(u.*u + v.*v),v./sqrt(u.*u + v.*v),'k');hold off
+hold on;quiver(u,v,0.5);hold off
 %a partire dal campo vettoriale prodotto dal GVF calcola gli orientamenti e
 %li riporta in un intervallo [-90 90]
 angle=atan2(v,u);
@@ -76,6 +77,7 @@ mosaic_image=ones(row,col,3)*127;
 %Area_int_border=0;
 
 test=0;
+
 for i=1:2:row
     i
     
@@ -89,8 +91,14 @@ for i=1:2:row
         
         %orientare il tassello in base alla direzione fornita dal GVF nel
         %punto (TO DO da valutare l'effetto di prendere la direzione ortogonale)
-        cur_angle=new_angle(i,j);
-        
+        if(abs(cur_angle - new_angle(i,j))<0.01)
+            
+     
+            new_angle=new_angle.*(180/pi)+(-1+(1+1*rand(1)));
+            cur_angle=new_angle(i,j);
+        else    
+            cur_angle=new_angle(i,j);
+        end   
         %considera tutte le tile precomputate
         for k=1:selectedTiles
             ind=randperm(tileNumber);

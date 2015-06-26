@@ -1,7 +1,8 @@
 function [u,v]=getVEF(dbdir,filename)
 
 outPath='';
-
+u=gpuArray(1000000000);
+v=gpuArray(1000000000);
 %close all;
 % mu=0.1;
 sigma=0;
@@ -11,8 +12,8 @@ suffix = filename(enddot+1:enddot+3);
 
 A=imread(filename);
 [row col chan]=size(A);
-rx=row;
-ry=col;
+rx=64;
+ry=64;
 
 if (strcmp(suffix,'pgm'))||(strcmp(suffix,'raw'))
     imageGray = rawread([dbdir,filename]);
@@ -50,7 +51,9 @@ end;
 
 %disp(['Iter:',num2str(indIter)]);
 % [u,v] = GVF(imageGradient, mu, NoGVFIterations);
+tic
 [u,v] = VEF(f, rx,ry,1);
+toc
 %    u=-u;
 %    v=-v;
 

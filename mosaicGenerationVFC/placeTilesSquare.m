@@ -89,8 +89,14 @@ for i=1:2:row
         
         %orientare il tassello in base alla direzione fornita dal GVF nel
         %punto (TO DO da valutare l'effetto di prendere la direzione ortogonale)
-        cur_angle=new_angle(i,j);
-        
+        if(abs(cur_angle - new_angle(i,j))<0.01)
+            
+     
+            new_angle=new_angle.*(180/pi)+(-1+(1+1*rand(1)));
+            cur_angle=new_angle(i,j);
+        else    
+            cur_angle=new_angle(i,j);
+        end           
         %considera tutte le tile precomputate
         for k=1:selectedTiles
             ind=randperm(tileNumber);
